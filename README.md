@@ -1,34 +1,19 @@
 # vue-tour-of-heroes
+Tour of heroes for Vue.js
+ 
+## Routing
+|URL|Component|Description|
+|---|---|---|
+|/dashbord|Dashbord.vue|GET|
+|/heroes  |Heroes.vue|GET|
+|/hero/:id|HeroDetail.vue|UPDATE / DELETE|
+|/hero/new|HeroForm.vue|CREATE|
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Run your end-to-end tests
-```
-npm run test:e2e
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Entity
+### Hero
+|No|Name|Type|
+|---|---|---|
+|1|id|string|
+|2|name|string|
+|3|created|date|
+|4|updated|date|
