@@ -1,33 +1,52 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Dashboard</router-link> |
-      <router-link to="/heroes">Heroes</router-link> |
+  <div>
+    <h1>{{ title }}</h1>
+    <nav>
+      <router-link to="/">Dashboard</router-link>
+      <router-link to="/heroes">Heroes</router-link>
       <router-link to="/hero/new">New Hero</router-link>
-    </div>
+    </nav>
     <router-view />
   </div>
 </template>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script lang="ts">
+export default {
+  name: 'app',
+  data() {
+    return {
+      title: 'Tour of heroes'
+    };
+  }
+};
+</script>
+<style scoped>
+/* AppComponent's private CSS styles */
+h1 {
+  font-size: 1.2em;
+  margin-bottom: 0;
 }
-
-#nav {
-  padding: 30px;
+h2 {
+  font-size: 2em;
+  margin-top: 0;
+  padding-top: 0;
 }
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+nav a {
+  padding: 5px 10px;
+  text-decoration: none;
+  margin-top: 10px;
+  display: inline-block;
+  background-color: #eee;
+  border-radius: 4px;
 }
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+nav a:visited,
+a:link {
+  color: #334953;
+}
+nav a:hover {
+  color: #039be5;
+  background-color: #cfd8dc;
+}
+nav a.active {
+  color: #039be5;
 }
 </style>
