@@ -1,5 +1,6 @@
 import Vue from 'vue';
-import VueRouter from 'vue-router';
+import VueRouter, { RouteConfig } from 'vue-router';
+import { exampleGuard } from '@/guards/example.guard';
 
 Vue.use(VueRouter);
 
@@ -18,37 +19,39 @@ Vue.use(VueRouter);
  * - caseSensitive 大文字小文字を無視
  * -
  */
-const routes = [
+const routes: RouteConfig[] = [
   {
     path: '/',
     redirect: '/dashboard'
   },
   {
     path: '/dashboard',
-    name: 'Dashboard',
+    name: 'dashboard',
     /** 遅延ロード */
     component: () => import('../views/Dashboard.vue')
   },
   {
     path: '/heroes',
-    name: 'Heroes',
+    name: 'heroes',
     component: () => import('../views/Heroes.vue')
   },
   {
     /** ルートパラメーター */
     path: '/detail/:id',
-    name: 'HeroDetail',
+    name: 'heroDetail',
     component: () => import('../views/HeroDetail.vue')
   },
   {
     path: '/hero/new',
-    name: 'HeroForm',
+    name: 'heroForm',
     component: () => import('../views/HeroForm.vue')
   },
   {
     path: '/example/:id',
     name: 'example',
-    component: () => import('../views/Example.vue')
+    component: () => import('../views/Example.vue'),
+    /** ナビゲーションガード*/
+    beforeEnter: exampleGuard
   }
 ];
 

@@ -13,9 +13,9 @@
 
     <ul class="heroes">
       <li v-for="hero in heroes" v-bind:key="hero.id">
-        <a>
+        <router-link :to="{ name: 'heroDetail', params: { id: hero.id } }">
           <span class="badge">{{ hero.id }}</span> {{ hero.name }}
-        </a>
+        </router-link>
         <button class="delete" title="delete hero">x</button>
       </li>
     </ul>

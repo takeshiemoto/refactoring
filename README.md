@@ -4,10 +4,9 @@ Tour of heroes for Vue.js
 ## Routing
 |URL|Component|Description|
 |---|---|---|
-|/dashbord|Dashbord.vue|GET|
-|/heroes  |Heroes.vue|GET|
+|/dashboard|Dashboard.vue|GET|
+|/heroes  |Heroes.vue|GET / CREATE|
 |/hero/:id|HeroDetail.vue|UPDATE / DELETE|
-|/hero/new|HeroForm.vue|CREATE|
 
 ## Entity
 ### Hero
