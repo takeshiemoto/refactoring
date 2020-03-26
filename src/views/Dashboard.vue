@@ -2,24 +2,43 @@
   <div>
     <h3>Top Heroes</h3>
     <div class="grid grid-pad">
-      <a class="col-1-4">
+      <router-link
+        :to="{ name: 'heroDetail', params: { id: hero.id } }"
+        class="col-1-4"
+        v-for="hero in heroes"
+        v-bind:key="hero.id"
+      >
         <div class="module hero">
-          <h4>Hero A</h4>
+          <h4>{{ hero.name }}</h4>
         </div>
-      </a>
-      <a class="col-1-4">
-        <div class="module hero">
-          <h4>Hero B</h4>
-        </div>
-      </a>
+      </router-link>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { Hero } from '@/entities/hero.entity';
+import HeroService from '@/services/hero.service';
+
 export default Vue.extend({
-  name: 'Dashboard'
+  name: 'Dashboard',
+  data(): { heroes: Hero[] } {
+    return {
+      heroes: []
+    };
+  },
+  created(): void {
+    this.getHeroes();
+  },
+  methods: {
+    async getHeroes() {
+      const heroService = HeroService.getInstance();
+      this.heroes = await heroService
+        .getAll()
+        .then(heroes => heroes.slice(0, 4));
+    }
+  }
 });
 </script>
 

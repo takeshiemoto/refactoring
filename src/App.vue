@@ -4,7 +4,6 @@
     <nav>
       <router-link to="/">Dashboard</router-link>
       <router-link to="/heroes">Heroes</router-link>
-      <router-link to="/hero/new">New Hero</router-link>
       <router-link to="/example/1">Example</router-link>
     </nav>
     <router-view />

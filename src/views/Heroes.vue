@@ -24,17 +24,23 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Hero } from '@/entities/hero.entity';
+import HeroService from '@/services/hero.service';
 export default Vue.extend({
   name: 'heroes',
-  data() {
+  data(): { heroes: Hero[] } {
     return {
-      heroes: [
-        { id: 1, name: 'John' },
-        { id: 2, name: 'Paul' },
-        { id: 3, name: 'Ringo' },
-        { id: 4, name: 'George' }
-      ]
+      heroes: []
     };
+  },
+  created(): void {
+    this.getHeroes();
+  },
+  methods: {
+    async getHeroes() {
+      const heroService = HeroService.getInstance();
+      this.heroes = await heroService.getAll();
+    }
   }
 });
 </script>
