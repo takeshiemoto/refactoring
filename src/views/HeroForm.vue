@@ -1,5 +1,7 @@
 <template>
-  <h1>HeroForm</h1>
+  <div>
+    <h2>HeroForm</h2>
+  </div>
 </template>
 
 <script>
