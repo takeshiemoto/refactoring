@@ -36,4 +36,8 @@ export default class HeroService {
     const lastId = this.heroes[this.heroes.length - 1].id;
     this.heroes.push({ id: lastId + 1, name });
   }
+
+  public async deleteHero(id: number): Promise<void> {
+    this.heroes = this.heroes.filter(hero => hero.id !== id);
+  }
 }

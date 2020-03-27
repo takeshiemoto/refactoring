@@ -16,7 +16,9 @@
         <router-link :to="{ name: 'heroDetail', params: { id: hero.id } }">
           <span class="badge">{{ hero.id }}</span> {{ hero.name }}
         </router-link>
-        <button class="delete" title="delete hero">x</button>
+        <button @click="deleteHero(hero.id)" class="delete" title="delete hero">
+          x
+        </button>
       </li>
     </ul>
   </div>
@@ -44,7 +46,12 @@ export default Vue.extend({
     },
     async addHero() {
       await this.heroService.addHero(this.addHeroName);
+      await this.getHeroes();
       this.addHeroName = '';
+    },
+    async deleteHero(id: number) {
+      await this.heroService.deleteHero(id);
+      await this.getHeroes();
     }
   }
 });
