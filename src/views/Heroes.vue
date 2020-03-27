@@ -4,9 +4,9 @@
     <div>
       <label
         >Hero name:
-        <input />
+        <input v-model="addHeroName" />
       </label>
-      <button>
+      <button @click="addHero()">
         add
       </button>
     </div>
@@ -28,9 +28,11 @@ import { Hero } from '@/entities/hero.entity';
 import HeroService from '@/services/hero.service';
 export default Vue.extend({
   name: 'heroes',
-  data(): { heroes: Hero[] } {
+  data(): { heroService: HeroService; heroes: Hero[]; addHeroName: string } {
     return {
-      heroes: []
+      heroService: HeroService.getInstance(),
+      heroes: [],
+      addHeroName: ''
     };
   },
   created(): void {
@@ -38,8 +40,11 @@ export default Vue.extend({
   },
   methods: {
     async getHeroes() {
-      const heroService = HeroService.getInstance();
-      this.heroes = await heroService.getAll();
+      this.heroes = await this.heroService.getAll();
+    },
+    async addHero() {
+      await this.heroService.addHero(this.addHeroName);
+      this.addHeroName = '';
     }
   }
 });

@@ -31,4 +31,9 @@ export default class HeroService {
   public async getHeroById(id: number): Promise<Hero | undefined> {
     return this.heroes.find(hero => hero.id === id);
   }
+
+  public async addHero(name: string): Promise<void> {
+    const lastId = this.heroes[this.heroes.length - 1].id;
+    this.heroes.push({ id: lastId + 1, name });
+  }
 }
