@@ -13,6 +13,7 @@
         </div>
       </router-link>
     </div>
+    <HeroSearch></HeroSearch>
   </div>
 </template>
 
@@ -20,9 +21,13 @@
 import Vue from 'vue';
 import { Hero } from '@/entities/hero.entity';
 import HeroService from '@/services/hero.service';
+import HeroSearch from '@/components/HeroSearch.vue';
 
 export default Vue.extend({
   name: 'Dashboard',
+  components: {
+    HeroSearch
+  },
   data(): { heroes: Hero[] } {
     return {
       heroes: []
