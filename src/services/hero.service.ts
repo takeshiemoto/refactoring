@@ -37,6 +37,11 @@ export default class HeroService {
     this.heroes.push({ id: lastId + 1, name });
   }
 
+  public async updateHero(id: number, hero: Hero): Promise<Hero> {
+    this.heroes = this.heroes.map(h => (h.id === id ? hero : h));
+    return hero;
+  }
+
   public async deleteHero(id: number): Promise<void> {
     this.heroes = this.heroes.filter(hero => hero.id !== id);
   }
