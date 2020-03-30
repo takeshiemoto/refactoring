@@ -40,4 +40,8 @@ export default class HeroService {
   public async deleteHero(id: number): Promise<void> {
     this.heroes = this.heroes.filter(hero => hero.id !== id);
   }
+
+  public async searchHero(name: string): Promise<Hero[]> {
+    return this.heroes.filter(hero => hero.name.includes(name));
+  }
 }

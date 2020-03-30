@@ -1,8 +1,11 @@
 import Vue from 'vue';
 import App from './App.vue';
-import router from './router';
+import VueRx from 'vue-rx';
 
+import router from './router';
 import './assets/styles/main.css';
+
+Vue.use(VueRx);
 
 Vue.config.productionTip = false;
 
