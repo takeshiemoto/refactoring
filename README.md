@@ -6,7 +6,7 @@ Tour of heroes for Vue.js
 |---|---|---|
 |/dashboard|Dashboard.vue|GET|
 |/heroes  |Heroes.vue|GET / CREATE / DELETE|
-|/hero/:id|HeroDetail.vue|UPDATE|
+|/detail/:id|HeroDetail.vue|UPDATE|
 
 ## Entity
 ### Hero
