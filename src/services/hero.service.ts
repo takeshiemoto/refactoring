@@ -42,6 +42,9 @@ export default class HeroService {
   }
 
   public async searchHero(name: string): Promise<Hero[]> {
-    return this.heroes.filter(hero => hero.name.includes(name));
+    if (!name) {
+      return [];
+    }
+    return this.heroes.filter(hero => hero.name.toLowerCase().includes(name));
   }
 }
