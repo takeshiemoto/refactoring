@@ -1,4 +1,27 @@
-import { Invoice, Play, Plays } from './types';
+import { Invoice, Performance, Play, Plays } from './types';
+
+const amountFor = (pref: Performance, play: Play) => {
+  let thisAmount = 0;
+
+  switch (play.type) {
+    case 'tragedy':
+      thisAmount = 40000;
+      if (pref.audience > 30) {
+        thisAmount += 1000 * (pref.audience - 30);
+      }
+      break;
+    case 'comedy':
+      thisAmount = 30000;
+      if (pref.audience > 20) {
+        thisAmount += 10000 + 500 * (pref.audience - 20);
+      }
+      thisAmount += 300 * pref.audience;
+      break;
+    default:
+      throw new Error(`unknown type: ${play.type}`);
+  }
+  return thisAmount;
+};
 
 export const statement = (invoice: Invoice, plays: Plays) => {
   let totalAmount = 0;
@@ -12,25 +35,7 @@ export const statement = (invoice: Invoice, plays: Plays) => {
 
   for (const pref of invoice.performances) {
     const play: Play = plays[pref.playID];
-    let thisAmount = 0;
-
-    switch (play.type) {
-      case 'tragedy':
-        thisAmount = 40000;
-        if (pref.audience > 30) {
-          thisAmount += 1000 * (pref.audience - 30);
-        }
-        break;
-      case 'comedy':
-        thisAmount = 30000;
-        if (pref.audience > 20) {
-          thisAmount += 10000 + 500 * (pref.audience - 20);
-        }
-        thisAmount += 300 * pref.audience;
-        break;
-      default:
-        throw new Error(`unknown type: ${play.type}`);
-    }
+    const thisAmount = amountFor(pref, play);
 
     volumeCredits += Math.max(pref.audience - 30, 0);
 
