@@ -1,0 +1,125 @@
+{
+  "version": 2,
+  "cli": {
+    "defaultCollection": "@nrwl/react"
+  },
+  "defaultProject": "performances",
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "style": "styled-components",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "styled-components"
+      },
+      "library": {
+        "style": "styled-components",
+        "linter": "eslint"
+      }
+    }
+  },
+  "projects": {
+    "performances": {
+      "root": "apps/performances",
+      "sourceRoot": "apps/performances/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/performances",
+            "index": "apps/performances/src/index.html",
+            "main": "apps/performances/src/main.tsx",
+            "polyfills": "apps/performances/src/polyfills.ts",
+            "tsConfig": "apps/performances/tsconfig.app.json",
+            "assets": [
+              "apps/performances/src/favicon.ico",
+              "apps/performances/src/assets"
+            ],
+            "styles": [],
+            "scripts": [],
+            "webpackConfig": "@nrwl/react/plugins/webpack"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/performances/src/environments/environment.ts",
+                  "with": "apps/performances/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "performances:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "performances:build:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/performances/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/performances"],
+          "options": {
+            "jestConfig": "apps/performances/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "performances-e2e": {
+      "root": "apps/performances-e2e",
+      "sourceRoot": "apps/performances-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/performances-e2e/cypress.json",
+            "tsConfig": "apps/performances-e2e/tsconfig.e2e.json",
+            "devServerTarget": "performances:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "performances:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/performances-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  }
+}
