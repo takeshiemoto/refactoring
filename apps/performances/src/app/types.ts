@@ -4,9 +4,16 @@ export type Plays = {
   'as-like': Play;
   hamlet: Play;
 };
-export type Performance = { playID: string; audience: number };
+export type Performance = {
+  playID: string;
+  audience: number;
+  play?: Play;
+  amount?: number;
+  volumeCredits?: number;
+};
+export type Performances = Performance[];
 export type Invoice = {
-  performances: Performance[];
+  performances: Performances;
   customer: string;
 };
 export type Invoices = Invoice[];
