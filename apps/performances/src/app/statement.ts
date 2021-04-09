@@ -28,31 +28,46 @@ export const statement = (invoice: Invoice, plays: Plays) => {
     return plays[performance.playID];
   };
 
-  let totalAmount = 0;
-  let volumeCredits = 0;
-  let result = `Statement for ${invoice.customer}\n`;
-  const format = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-  }).format;
-
-  for (const pref of invoice.performances) {
-    const thisAmount = amountFor(pref, playFor(pref));
-
-    volumeCredits += Math.max(pref.audience - 30, 0);
-
+  const volumeCreditsFor = (pref: Performance): number => {
+    let result = 0;
+    result += Math.max(pref.audience - 30, 0);
     if ('comedy' === playFor(pref).type) {
-      volumeCredits += Math.floor(pref.audience / 5);
+      result += Math.floor(pref.audience / 5);
     }
+    return result;
+  };
 
-    result += ` ${playFor(pref).name}: ${format(thisAmount / 100)} (${
-      pref.audience
-    } seats) \n`;
-    totalAmount += thisAmount;
+  const usd = (n: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+    }).format(n / 100);
+  };
+
+  const totalVolumeCredits = () => {
+    let result = 0;
+    for (const pref of invoice.performances) {
+      result = volumeCreditsFor(pref);
+    }
+    return result;
+  };
+
+  const totalAmount = () => {
+    let result = 0;
+    for (const pref of invoice.performances) {
+      result += amountFor(pref, playFor(pref));
+    }
+    return result;
+  };
+
+  let result = `Statement for ${invoice.customer}\n`;
+  for (const pref of invoice.performances) {
+    result += ` ${playFor(pref).name}: ${usd(
+      amountFor(pref, playFor(pref))
+    )} (${pref.audience} seats) \n`;
   }
-
-  result += `Amount owed is ${format(totalAmount / 100)}\n`;
-  result += `You earned ${volumeCredits} credits\n`;
+  result += `Amount owed is ${usd(totalAmount())}\n`;
+  result += `You earned ${totalVolumeCredits()} credits\n`;
   return result;
 };
