@@ -17,3 +17,10 @@ export type Invoice = {
   customer: string;
 };
 export type Invoices = Invoice[];
+
+export type StatementData = {
+  customer: string;
+  performances: Performances;
+  totalAmount?: number;
+  totalVolumeCredits?: number;
+};

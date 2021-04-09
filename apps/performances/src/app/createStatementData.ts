@@ -1,20 +1,12 @@
-import { Invoice, Performance, Performances, Play, Plays } from './types';
+import { Invoice, Performance, Play, Plays, StatementData } from './types';
 
-type StatementData = {
-  customer: string;
-  performances: Performances;
-  totalAmount?: number;
-  totalVolumeCredits?: number;
-};
-
-export const statement = (invoice: Invoice, plays: Plays) => {
+export const createStatementData = (invoice: Invoice, plays: Plays) => {
   const statementData: StatementData = { customer: '', performances: [] };
   statementData.performances = invoice.performances.map(enrichPerformance);
   statementData.customer = invoice.customer;
   statementData.totalAmount = totalAmount(statementData);
   statementData.totalVolumeCredits = totalVolumeCredits(statementData);
-
-  return renderPlainText(statementData, plays);
+  return statementData;
 
   function enrichPerformance(pref: Performance) {
     const result = Object.assign({}, pref);
@@ -61,38 +53,13 @@ export const statement = (invoice: Invoice, plays: Plays) => {
   }
 
   function totalVolumeCredits(data: StatementData) {
-    let result = 0;
-    for (const pref of data.performances) {
-      result = pref.volumeCredits;
-    }
-    return result;
+    return data.performances.reduce(
+      (total, p) => (total += p.volumeCredits),
+      0
+    );
   }
 
   function totalAmount(data: StatementData) {
-    let result = 0;
-    for (const pref of data.performances) {
-      result += pref.amount;
-    }
-    return result;
-  }
-};
-
-export const renderPlainText = (data: StatementData, plays: Plays) => {
-  let result = `Statement for ${data.customer}\n`;
-  for (const pref of data.performances) {
-    result += ` ${pref.play.name}: ${usd(pref.amount)} (${
-      pref.audience
-    } seats) \n`;
-  }
-  result += `Amount owed is ${usd(data.totalAmount)}\n`;
-  result += `You earned ${data.totalVolumeCredits} credits\n`;
-  return result;
-
-  function usd(n: number) {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-    }).format(n / 100);
+    return data.performances.reduce((total, p) => (total += p.amount), 0);
   }
 };
