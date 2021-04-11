@@ -17,7 +17,7 @@ export const RenderHtml: FC<Props> = ({ data }) => {
           <th>cost</th>
         </tr>
         {data.performances.map((p) => (
-          <tr>
+          <tr key={p.playID}>
             <td>{p.play.name}</td>
             <td>{p.audience}</td>
             <td>{p.amount}</td>

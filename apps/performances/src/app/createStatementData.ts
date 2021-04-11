@@ -9,47 +9,16 @@ export const createStatementData = (invoice: Invoice, plays: Plays) => {
   return statementData;
 
   function enrichPerformance(pref: Performance) {
+    const calculator = createPerformanceCalculator(pref, playFor(pref));
     const result = Object.assign({}, pref);
     result.play = playFor(result);
-    result.amount = amountFor(result);
-    result.volumeCredits = volumeCreditsFor(result);
+    result.amount = calculator.amount;
+    result.volumeCredits = calculator.volumeCredits;
     return result;
   }
 
   function playFor(performance: Performance): Play {
     return plays[performance.playID];
-  }
-
-  function amountFor(pref: Performance) {
-    let result = 0;
-
-    switch (pref.play.type) {
-      case 'tragedy':
-        result = 40000;
-        if (pref.audience > 30) {
-          result += 1000 * (pref.audience - 30);
-        }
-        break;
-      case 'comedy':
-        result = 30000;
-        if (pref.audience > 20) {
-          result += 10000 + 500 * (pref.audience - 20);
-        }
-        result += 300 * pref.audience;
-        break;
-      default:
-        throw new Error(`unknown type: ${pref.play.type}`);
-    }
-    return result;
-  }
-
-  function volumeCreditsFor(pref: Performance): number {
-    let result = 0;
-    result += Math.max(pref.audience - 30, 0);
-    if ('comedy' === pref.play.type) {
-      result += Math.floor(pref.audience / 5);
-    }
-    return result;
   }
 
   function totalVolumeCredits(data: StatementData) {
@@ -63,3 +32,53 @@ export const createStatementData = (invoice: Invoice, plays: Plays) => {
     return data.performances.reduce((total, p) => (total += p.amount), 0);
   }
 };
+
+export const createPerformanceCalculator = (
+  performance: Performance,
+  play: Play
+) => {
+  switch (play.type) {
+    case 'tragedy':
+      return new TragedyCalculator(performance, play);
+    case 'comedy':
+      return new ComedyCalculator(performance, play);
+    default:
+      throw new Error(`未知の演劇の種類 ${play.type}`);
+  }
+};
+
+class PerformanceCalculator {
+  constructor(public performance: Performance, public play: Play) {}
+
+  get amount(): number | void {
+    throw new Error('サブクラスの責務');
+  }
+
+  get volumeCredits(): number {
+    return Math.max(this.performance.audience - 30, 0);
+  }
+}
+
+class TragedyCalculator extends PerformanceCalculator {
+  get amount() {
+    let result = 40000;
+    if (this.performance.audience > 30) {
+      result += 1000 * (this.performance.audience - 30);
+    }
+    return result;
+  }
+}
+class ComedyCalculator extends PerformanceCalculator {
+  get amount() {
+    let result = 30000;
+    if (this.performance.audience > 20) {
+      result += 10000 + 500 * (this.performance.audience - 20);
+    }
+    result += 300 * this.performance.audience;
+    return result;
+  }
+
+  get volumeCredits() {
+    return super.volumeCredits + Math.floor(this.performance.audience / 5);
+  }
+}
