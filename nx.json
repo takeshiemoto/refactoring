@@ -29,6 +29,9 @@
     "performances-e2e": {
       "tags": [],
       "implicitDependencies": ["performances"]
+    },
+    "recipe": {
+      "tags": []
     }
   }
 }

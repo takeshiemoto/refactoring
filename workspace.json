@@ -18,6 +18,12 @@
         "style": "styled-components",
         "linter": "eslint"
       }
+    },
+    "@nrwl/next": {
+      "application": {
+        "style": "styled-components",
+        "linter": "eslint"
+      }
     }
   },
   "projects": {
@@ -117,6 +123,57 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/performances-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "recipe": {
+      "root": "apps/recipe",
+      "sourceRoot": "apps/recipe",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/next:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "root": "apps/recipe",
+            "outputPath": "dist/apps/recipe"
+          },
+          "configurations": {
+            "production": {}
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/next:server",
+          "options": {
+            "buildTarget": "recipe:build",
+            "dev": true
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "recipe:build:production",
+              "dev": false
+            }
+          }
+        },
+        "export": {
+          "executor": "@nrwl/next:export",
+          "options": {
+            "buildTarget": "recipe:build:production"
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/recipe"],
+          "options": {
+            "jestConfig": "apps/recipe/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/recipe/**/*.{ts,tsx,js,jsx}"]
           }
         }
       }
